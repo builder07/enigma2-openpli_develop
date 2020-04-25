@@ -11493,3 +11493,8 @@ msgstr "Управление монтированиями"
 msgid "Rescan"
 msgstr "Пересканировать"
 
+# Geolocation
+
+msgid "Geolocation"
+msgstr "Геолокация"
+
