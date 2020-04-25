@@ -711,10 +711,10 @@ msgid "Abort"
 msgstr "Прервать"
 
 msgid "About"
-msgstr "Информация об имидже"
+msgstr "Об имидже"
 
 msgid "About..."
-msgstr "Информация об имидже..."
+msgstr "Об имидже..."
 
 msgid "Accesspoint:"
 msgstr "Точка доступа:"
@@ -7190,7 +7190,7 @@ msgid "Serbian"
 msgstr "Сербский"
 
 msgid "Service"
-msgstr "Информация о сервисе"
+msgstr "О сервисе"
 
 msgid "Service & PIDs"
 msgstr "Сервис & PIDs"
@@ -8090,7 +8090,7 @@ msgid "Stream request"
 msgstr "Запрос стрима"
 
 msgid "Streaming clients info"
-msgstr "Информация о клиентах стриминга"
+msgstr "О клиентах стриминга"
 
 msgid "Strongest position"
 msgstr "Лучшая позиция"
