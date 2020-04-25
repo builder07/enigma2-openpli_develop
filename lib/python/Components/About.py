@@ -54,6 +54,14 @@ def getGStreamerVersionString(cpu):
 		return "%s" % gst[1].split("+")[0].replace("\n","")
 	except:
 		return _("Not Required") if cpu.upper().startswith('HI') else _("Not Installed")
+	
+def getFFmpegVersionString():
+	try:
+		from glob import glob
+		ffmpeg = [x.split("Version: ") for x in open(glob("/var/lib/opkg/info/ffmpeg.control")[0], "r") if x.startswith("Version:")][0]
+		return "%s" % ffmpeg[1].split("-")[0].replace("\n","")
+	except:
+		return _("unknown")
 
 def getKernelVersionString():
 	try:
@@ -173,6 +181,14 @@ def GetIPsFromNetworkInterfaces():
 			iface_addr = socket.inet_ntoa(namestr[i+20:i+24])
 			ifaces.append((iface_name, iface_addr))
 	return ifaces
+def getIdea():
+		return _("BlackFish")
+
+def getEmail():
+		return _("blackfish.3654@gmail.com")
+	
+def getDonate():
+		return _("Z541154775569")
 
 # For modules that do "from About import about"
 about = sys.modules[__name__]
