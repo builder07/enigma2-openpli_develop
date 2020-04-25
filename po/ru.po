@@ -7190,7 +7190,7 @@ msgid "Serbian"
 msgstr "Сербский"
 
 msgid "Service"
-msgstr "Сервис"
+msgstr "Информация о сервисе"
 
 msgid "Service & PIDs"
 msgstr "Сервис & PIDs"
