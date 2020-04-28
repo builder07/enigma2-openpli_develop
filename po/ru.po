@@ -711,10 +711,10 @@ msgid "Abort"
 msgstr "Прервать"
 
 msgid "About"
-msgstr "Об имидже"
+msgstr "Информация об имидже"
 
 msgid "About..."
-msgstr "Об имидже..."
+msgstr "Информация об имидже..."
 
 msgid "Accesspoint:"
 msgstr "Точка доступа:"
@@ -7190,7 +7190,7 @@ msgid "Serbian"
 msgstr "Сербский"
 
 msgid "Service"
-msgstr "О сервисе"
+msgstr "Информация о сервисе"
 
 msgid "Service & PIDs"
 msgstr "Сервис & PIDs"
@@ -8090,7 +8090,7 @@ msgid "Stream request"
 msgstr "Запрос стрима"
 
 msgid "Streaming clients info"
-msgstr "О клиентах стриминга"
+msgstr "Информация о клиентах стриминга"
 
 msgid "Strongest position"
 msgstr "Лучшая позиция"
@@ -9123,6 +9123,9 @@ msgstr "Обновить и перезагрузить (рекомендуетс
 
 msgid "Update channel list only"
 msgstr "Обновить только список каналов"
+
+msgid "Show packaages to be updated"
+msgstr "Показать пакеты, которые будут обновлены"
 
 #, python-format
 msgid "Update completed, %d package was installed."
