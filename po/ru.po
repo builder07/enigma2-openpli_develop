@@ -11453,7 +11453,6 @@ msgid "Please set your time zone"
 msgstr "Пожалуйста, установите ваш часовой пояс"
 
 # Network Wizard & Network Browser
-
 msgid "MountManager"
 msgstr "Установки монтирования"
 
@@ -11497,7 +11496,10 @@ msgid "Rescan"
 msgstr "Пересканировать"
 
 # Geolocation
-
 msgid "Geolocation"
 msgstr "Геолокация"
+
+# LCN Scaner
+msgid "LCN Scaner"
+msgstr "Сканер LCN"
 
