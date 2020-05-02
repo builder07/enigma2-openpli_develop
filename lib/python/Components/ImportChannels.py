@@ -93,7 +93,6 @@ class ImportChannels():
 				for file in files:
 					file = file.encode("UTF-8")
 					print "[Import Channels] Downloading %s" % file
-					destination = "/tmp/tmp"
 					try:
 						open(os.path.join(self.tmp_dir, os.path.basename(file)), "wb").write(self.getUrl("%s/file?file=%s" % (self.url, file)).read())
 					except:
