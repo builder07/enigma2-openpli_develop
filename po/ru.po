@@ -9133,8 +9133,15 @@ msgstr "Журнал последних обновлений"
 msgid "Leave message"
 msgstr "Оставить сообщение"
 
-msgid "Show packaages to be updated"
+msgid "Show packages to be updated"
 msgstr "Показать пакеты, которые будут обновлены"
+
+msgid "Unattended update in progress\n"
+"Please wait until your receiver reboots\n"
+"This may take a few minutes"
+msgstr "Выполняется автоматическое обновление.\n"
+"Пожалуйста, подождите, пока ваш ресивер не перезагрузится.\n"
+"Это может занять несколько минут."
 
 #, python-format
 msgid "Update completed, %d package was installed."
