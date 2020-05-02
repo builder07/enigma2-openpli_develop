@@ -404,7 +404,7 @@ class MultibootSelection(SelectImage):
 		self.session = session
 		self.imagesList = None
 		self.expanded = []
-		self.tmp_dir = None		
+		self.tmp_dir = None
 		self.setTitle(_("Multiboot image selector"))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
@@ -435,7 +435,8 @@ class MultibootSelection(SelectImage):
 
 	def unmountCallback(self, value, data=None, retval=None, extra_args=None):
 		self.container.killAll()
-		shutil.rmtree(self.tmp_dir, True)
+		if not os.path.ismount(self.tmp_dir):
+			os.rmdir(self.tmp_dir)
 		if value == 2:
 			from Screens.Standby import TryQuitMainloop
 			self.session.open(TryQuitMainloop, 2)
