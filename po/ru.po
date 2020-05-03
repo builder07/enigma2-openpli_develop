@@ -3401,7 +3401,7 @@ msgid "FTA"
 msgstr "FTA"
 
 msgid "Factory reset"
-msgstr "Сброс к дефолтным установкам"
+msgstr "Сброс к заводским настройкам"
 
 msgid "Factory reset will restore your receiver to its default configuration. All user data including system settings, tuner configuration, bouquets, services and plugins will be DELETED. Recordings and other files stored on HDD and USB media will remain intact. After completion, the system will restart automatically!\n"
 "\n"
@@ -6106,7 +6106,7 @@ msgid "Protect main menu"
 msgstr "Защита главного меню"
 
 msgid "Protect manufacturer reset screen"
-msgstr "Защита меню сброса на дефолтные настройки"
+msgstr "Защита меню сброса на заводские настройки"
 
 msgid "Protect menu sort"
 msgstr "Защита меню сортировки"
