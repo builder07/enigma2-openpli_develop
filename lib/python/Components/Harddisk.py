@@ -48,6 +48,8 @@ class Harddisk:
 
 		if os.access("/dev/.udev", 0):
 			self.type = DEVTYPE_UDEV
+		elif os.access("/dev/udev_network_queue", 0):
+			self.type = DEVTYPE_UDEV
 		elif os.access("/dev/.devfsd", 0):
 			self.type = DEVTYPE_DEVFS
 		else:
@@ -363,7 +365,9 @@ class Harddisk:
 		task = Task.ConditionTask(job, _("Waiting for partition"))
 		task.check = lambda: os.path.exists(self.partitionPath("1"))
 		task.weighting = 1
-
+		
+		if self.type == DEVTYPE_UDEV:
+		        task = UnmountTask(job, self)
 		task = MkfsTask(job, _("Creating filesystem"))
 		big_o_options = ["dir_index"]
 		if isFileSystemSupported("ext4"):
