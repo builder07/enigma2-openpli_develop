@@ -11519,9 +11519,6 @@ msgstr "Геолокация"
 msgid "LCN Scanner"
 msgstr "Сканер LCN"
 
-msgid "LCN Scanner..."
-msgstr "Сканер LCN..."
-
 msgid "Enable terrestrial LCN:"
 msgstr "Включить наземный LCN:"
 
@@ -11539,5 +11536,9 @@ msgstr "Перестроить"
 
 msgid "Rebuild LCN bouquet now?"
 msgstr "Перестроить букет LCN сейчас?"
+
+# Change Root Password
+msgid "Change Root Password"
+msgstr "Установка пароля для пользователя "root""
 
 
