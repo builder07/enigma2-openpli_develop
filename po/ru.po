@@ -11539,6 +11539,6 @@ msgstr "Перестроить букет LCN сейчас?"
 
 # Change Root Password
 msgid "Change Root Password"
-msgstr "Установка пароля для пользователя "root""
+msgstr "Установка пароля для пользователя <root>"
 
 
