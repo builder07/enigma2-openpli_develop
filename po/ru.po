@@ -1085,7 +1085,7 @@ msgid "Audio"
 msgstr "Аудио"
 
 msgid "Audio / Video"
-msgstr "Аудио / видео"
+msgstr "Аудио / Видео"
 
 msgid "Audio PID"
 msgstr "Аудио PID"
