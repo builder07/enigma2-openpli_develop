@@ -1089,7 +1089,13 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (snr * 240) >> 8;
 	}
-	else if (strstr(m_description, "BCM4506") || strstr(m_description, "BCM4505") || strstr(m_description, "BCM45208") || strstr(m_description, "BCM45308") || strstr(m_description, "BCM4506 (internal)") || strstr(m_description, "BCM73625 (G3)"))
+	else if (strstr(m_description, "BCM4506") ||
+		strstr(m_description, "BCM4505") ||
+		strstr(m_description, "BCM45208") ||
+		strstr(m_description, "BCM45308") ||
+		strstr(m_description, "BCM4506 (internal)") ||
+		strstr(m_description, "BCM73625 (G3)") ||
+		strstr(m_description, "BCM3158"))
 	{
 		ret = (snr * 100) >> 8;
 	}
@@ -1106,7 +1112,9 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1600) + 0.2100) * 100);
 	}
-	else if (!strcmp(m_description, "Vuplus DVB-S NIM(AVL6222)") || !strcmp(m_description, "Vuplus DVB-S NIM(AVL6211)") || !strcmp(m_description, "BCM7335 DVB-S2 NIM (internal)")) // VU+ DVB-S2 Dual NIM and VU+DUO DVB-S2 NIM
+	else if (!strcmp(m_description, "Vuplus DVB-S NIM(AVL6222)") ||
+		!strcmp(m_description, "Vuplus DVB-S NIM(AVL6211)") ||
+		!strcmp(m_description, "BCM7335 DVB-S2 NIM (internal)")) // VU+ DVB-S2 Dual NIM and VU+DUO DVB-S2 NIM
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1244) + 2.5079) * 100);
 		if (!strcmp(m_description, "Vuplus DVB-S NIM(AVL6222)"))
@@ -1128,7 +1136,9 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.28) - 10.0) * 100);
 	}
-	else if (!strcmp(m_description, "DVB-S2 NIM(45208 FBC)") || !strcmp(m_description, "DVB-S2 NIM(45308 FBC)"))
+	else if (strstr(m_description, "NIM(45208 FBC)") ||
+		strstr(m_description, "NIM(45308 FBC)") ||
+		strstr(m_description, "NIM(45308X FBC)"))
 	{
 		ret = (int)((((double(snr) / (65535.0 / 100.0)) * 0.1950) - 1.0000) * 100);
 	}
@@ -1187,6 +1197,11 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (int)(snr / 40.5);
 		sat_max = 1900;
+	}
+	else if (strstr(m_description, "BCM3148"))
+	{
+		ret = (int)(snr / 15.61);
+		sat_max = 4200;
 	}
 	else if(!strcmp(m_description, "TBS-5925") || !strcmp(m_description, "DVBS2BOX") || !strcmp(m_description, "TechniSat USB device"))
 	{
@@ -2380,7 +2395,7 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, 
 			feparm.t2mi_pid);
 		if ((unsigned int)satfrequency < (fe_info.type ? fe_info.frequency_min/1000 : fe_info.frequency_min)
 			|| (unsigned int)satfrequency > (fe_info.type ? fe_info.frequency_max/1000 : fe_info.frequency_max))
-                {
+		{
 			eDebugNoSimulate("[eDVBFrontend%d] %d mhz out of tuner range.. dont tune", m_dvbid, satfrequency / 1000);
 			return -EINVAL;
 		}
@@ -2993,7 +3008,7 @@ std::string eDVBFrontend::getCapabilities()
 	ss << "Frontend: " << fe_info.name << std::endl;
 
 	int k = fe_info.type ? 1 : 1000;
-	
+
 	ss << "Frequency:";
 	ss << " min " <<  formatHz(fe_info.frequency_min * k);
 	ss << " max " << formatHz(fe_info.frequency_max * k);
