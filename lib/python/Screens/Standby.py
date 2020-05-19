@@ -118,7 +118,7 @@ class Standby(Screen):
 				if wakeup_time > 0:
 					self.standbyWakeupTimer.startLongTimer(wakeup_time)
 
-		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m')):
+		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m', 'ustym4kpro', 'viper4k')):
 			open("/proc/stb/hdmi/output", "w").write("off")
 
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
