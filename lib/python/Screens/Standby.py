@@ -1,24 +1,23 @@
 import os
+from time import time, localtime
+
 import RecordTimer
 import Components.ParentalControl
-from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
+from Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.config import config
 from Components.AVSwitch import AVSwitch
 from Components.Console import Console
 from Components.ImportChannels import ImportChannels
-from Components.SystemInfo import SystemInfo
-from Components.Sources.StreamService import StreamServiceList
-from Components.Task import job_manager
 from Tools.Directories import mediafilesInUse
-from Tools import Notifications
-from time import time, localtime
+from Components.SystemInfo import SystemInfo
 from GlobalActions import globalActionMap
-from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer, quitMainloop, iRecordableService
+from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
+from Components.Sources.StreamService import StreamServiceList
+from Tools.HardwareInfo import HardwareInfo
+from boxbranding import getBoxType
 
 inStandby = None
-infoBarInstance = None
 
 QUIT_SHUTDOWN = 1
 QUIT_REBOOT = 2
@@ -26,27 +25,27 @@ QUIT_RESTART = 3
 QUIT_UPGRADE_FP = 4
 QUIT_ERROR_RESTART = 5
 QUIT_DEBUG_RESTART = 6
-QUIT_MANUFACTURER_RESET = 7
 QUIT_MAINT = 16
 QUIT_UPGRADE_PROGRAM = 42
 QUIT_IMAGE_RESTORE = 43
 
-def isInfoBarInstance():
-	global infoBarInstance
-	if infoBarInstance is None:
-		from Screens.InfoBar import InfoBar
-		if InfoBar.instance:
-			infoBarInstance = InfoBar.instance
-	return infoBarInstance
+class Standby(Screen):
+	def Power(self):
+		print "[Standby] leave standby"
+		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m')):
+			open("/proc/stb/hdmi/output", "w").write("on")
+		self.close(True)
 
-def checkTimeshiftRunning():
-	infobar_instance = isInfoBarInstance()
-	return config.usage.check_timeshift.value and infobar_instance and infobar_instance.timeshiftEnabled() and infobar_instance.timeshift_was_activated
+	def setMute(self):
+		self.wasMuted = eDVBVolumecontrol.getInstance().isMuted()
+		if not self.wasMuted:
+			eDVBVolumecontrol.getInstance().volumeMute()
 
+	def leaveMute(self):
+		if not self.wasMuted:
+			eDVBVolumecontrol.getInstance().volumeUnMute()
 
-class RealStandby(Screen):
 	def __init__(self, session, StandbyCounterIncrease=True):
-		self.skinName = "Standby"
 		Screen.__init__(self, session)
 		self.avswitch = AVSwitch()
 
@@ -63,8 +62,9 @@ class RealStandby(Screen):
 
 		globalActionMap.setEnabled(False)
 
-		self.infoBarInstance = isInfoBarInstance()
+		from Screens.InfoBar import InfoBar
 		from Screens.SleepTimerEdit import isNextWakeupTime
+		self.infoBarInstance = InfoBar.instance
 		self.StandbyCounterIncrease = StandbyCounterIncrease
 		self.standbyTimeoutTimer = eTimer()
 		self.standbyTimeoutTimer.callback.append(self.standbyTimeout)
@@ -118,6 +118,9 @@ class RealStandby(Screen):
 				if wakeup_time > 0:
 					self.standbyWakeupTimer.startLongTimer(wakeup_time)
 
+		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m')):
+			open("/proc/stb/hdmi/output", "w").write("off")
+
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
 		self.onClose.append(self.__onClose)
 
@@ -134,7 +137,8 @@ class RealStandby(Screen):
 			service = self.prev_running_service.toString()
 			if config.servicelist.startupservice_onstandby.value:
 				self.session.nav.playService(eServiceReference(config.servicelist.startupservice.value))
-				self.infoBarInstance and self.infoBarInstance.servicelist.correctChannelNumber()
+				from Screens.InfoBar import InfoBar
+				InfoBar.instance and InfoBar.instance.servicelist.correctChannelNumber()
 			else:
 				self.session.nav.playService(self.prev_running_service)
 		self.session.screen["Standby"].boolean = False
@@ -155,24 +159,14 @@ class RealStandby(Screen):
 		if self.StandbyCounterIncrease:
 			config.misc.standbyCounter.value += 1
 
-	def Power(self):
-		print "[Standby] leave standby"
-		self.close(True)
-
-	def setMute(self):
-		self.wasMuted = eDVBVolumecontrol.getInstance().isMuted()
-		if not self.wasMuted:
-			eDVBVolumecontrol.getInstance().volumeMute()
-
-	def leaveMute(self):
-		if not self.wasMuted:
-			eDVBVolumecontrol.getInstance().volumeUnMute()
-
 	def stopService(self):
 		self.prev_running_service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if Components.ParentalControl.parentalControl.isProtected(self.prev_running_service):
 			self.prev_running_service = eServiceReference(config.tv.lastservice.value)
 		self.session.nav.stopService()
+
+	def createSummary(self):
+		return StandbySummary
 
 	def standbyTimeout(self):
 		if config.usage.standby_to_shutdown_timer_blocktime.value:
@@ -191,35 +185,11 @@ class RealStandby(Screen):
 		if self.session.screen["TunerInfo"].tuner_use_mask or mediafilesInUse(self.session):
 			self.standbyTimeoutTimer.startLongTimer(600)
 		else:
-			RecordTimer.RecordTimerEntry.TryQuitMainloop()
+			from RecordTimer import RecordTimerEntry
+			RecordTimerEntry.TryQuitMainloop()
 
 	def standbyWakeup(self):
 		self.Power()
-
-	def createSummary(self):
-		return StandbySummary
-
-class Standby(RealStandby):
-	def __init__(self, session, StandbyCounterIncrease=True):
-		if checkTimeshiftRunning():
-			self.skin = """<screen position="0,0" size="0,0"/>"""
-			Screen.__init__(self, session)
-			self.infoBarInstance = isInfoBarInstance()
-			self.StandbyCounterIncrease = StandbyCounterIncrease
-			self.onFirstExecBegin.append(self.showCheckTimeshiftRunning)
-			self.onHide.append(self.close)
-		else:
-			RealStandby.__init__(self, session, StandbyCounterIncrease)
-
-	def showCheckTimeshiftRunning(self):
-		self.infoBarInstance.checkTimeshiftRunning(self.showCheckTimeshiftRunningCallback, timeout=20)
-
-	def showCheckTimeshiftRunningCallback(self, answer=False):
-		if answer:
-			self.onClose.append(self.goStandby)
-
-	def goStandby(self):
-		Notifications.AddNotification(RealStandby, self.StandbyCounterIncrease)
 
 class StandbySummary(Screen):
 	skin = """
@@ -232,6 +202,12 @@ class StandbySummary(Screen):
 			<convert type="ConditionalShowHide">Blink</convert>
 		</widget>
 	</screen>"""
+
+from enigma import quitMainloop, iRecordableService
+from Screens.MessageBox import MessageBox
+from time import time
+from Components.Task import job_manager
+
 
 class QuitMainloopScreen(Screen):
 	def __init__(self, session, retvalue=QUIT_SHUTDOWN):
@@ -248,8 +224,7 @@ class QuitMainloopScreen(Screen):
 			QUIT_UPGRADE_FP: _("Your frontprocessor will be updated\nPlease wait until your receiver reboots\nThis may take a few minutes"),
 			QUIT_ERROR_RESTART: _("The user interface of your receiver is restarting\ndue to an error in mytest.py"),
 			QUIT_DEBUG_RESTART: _("The user interface of your receiver is restarting in debug mode"),
-			QUIT_UPGRADE_PROGRAM: _("Unattended update in progress\nPlease wait until your receiver reboots\nThis may take a few minutes"),
-			QUIT_MANUFACTURER_RESET: _("Manufacturer reset in progress\nPlease wait until enigma2 restarts")
+			QUIT_UPGRADE_PROGRAM: _("Unattended update in progress\nPlease wait until your receiver reboots\nThis may take a few minutes")
 		}.get(retvalue)
 		self["text"] = Label(text)
 
@@ -270,12 +245,10 @@ def getReasons(session, retvalue=QUIT_SHUTDOWN):
 			reasons.append("%s: %s (%d%%)" % (job.getStatustext(), job.name, int(100*job.progress/float(job.end))))
 		else:
 			reasons.append((ngettext("%d job is running in the background!", "%d jobs are running in the background!", jobs) % jobs))
-	if checkTimeshiftRunning():
-		reasons.append(_("You seem to be in timeshift!"))
 	if eStreamServer.getInstance().getConnectedClients() or StreamServiceList:
-		reasons.append(_("Client is streaming from this box!"))
+			reasons.append(_("Client is streaming from this box!"))
 	if not reasons and mediafilesInUse(session) and retvalue in (QUIT_SHUTDOWN, QUIT_REBOOT, QUIT_UPGRADE_FP, QUIT_UPGRADE_PROGRAM):
-		reasons.append(_("A file from media is in use!"))
+			reasons.append(_("A file from media is in use!"))
 	return "\n".join(reasons)
 
 class TryQuitMainloop(MessageBox):
@@ -290,8 +263,7 @@ class TryQuitMainloop(MessageBox):
 				QUIT_RESTART: _("Really restart now?"),
 				QUIT_UPGRADE_FP: _("Really update the frontprocessor and reboot now?"),
 				QUIT_DEBUG_RESTART: _("Really restart in debug mode now?"),
-				QUIT_UPGRADE_PROGRAM: _("Really update your settop box and reboot now?"),
-				QUIT_MANUFACTURER_RESET: _("Really perform a manufacturer reset now?")
+				QUIT_UPGRADE_PROGRAM: _("Really update your settop box and reboot now?")
 			}.get(retvalue, None)
 			if text:
 				MessageBox.__init__(self, session, "%s\n%s" % (reason, text), type=MessageBox.TYPE_YESNO, timeout=timeout, default=default_yes)
@@ -320,7 +292,7 @@ class TryQuitMainloop(MessageBox):
 
 	def close(self, value):
 		if self.connected:
-			self.connected = False
+			self.connected=False
 			self.session.nav.record_event.remove(self.getRecordEvent)
 		if value:
 			self.hide()
