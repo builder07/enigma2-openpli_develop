@@ -32,7 +32,7 @@ QUIT_IMAGE_RESTORE = 43
 class Standby(Screen):
 	def Power(self):
 		print "[Standby] leave standby"
-		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m')):
+		if (getBoxType() in ('sf8008', 'sf8008s', 'sf8008t', 'sf8008m', 'ustym4kpro', 'viper4k')):
 			open("/proc/stb/hdmi/output", "w").write("on")
 		self.close(True)
 
