@@ -2504,6 +2504,9 @@ msgstr "удалить файл"
 msgid "Delete image"
 msgstr "Удалить имидж"
 
+msgid "Delete Image"
+msgstr "Удалить имидж"
+
 msgid "Delete playlist entry"
 msgstr "удалить запись из плейлиста"
 
@@ -11461,12 +11464,21 @@ msgstr "Включить дисплей в режиме глубокого ож�
 msgid "violet"
 msgstr "фиолетовый"
 
-# 
+# Multiboot
 msgid "Multiboot image selector"
 msgstr "Мультизагрузочный выбор имиджей"
 
 msgid "Please set your time zone"
 msgstr "Пожалуйста, установите ваш часовой пояс"
+
+msgid "Boot to Recovery menu"
+msgstr "Загрузка в меню Восстановления"
+
+msgid "(current image)"
+msgstr "(Текущий имидж)"
+
+msgid "Are you sure to reboot to:"
+msgstr "После перезагрузки будет выбран:"
 
 # Network Wizard & Network Browser
 msgid "MountManager"
