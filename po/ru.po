@@ -681,7 +681,7 @@ msgstr "Таймеру не удалось начать запись!\n"
 "Отключить ТВ (текущий просмотр) и попробовать еще раз?\n"
 
 msgid "A/V settings"
-msgstr "Аудио/Видео настройки"
+msgstr "Аудио / Видео настройки"
 
 msgid "AAC downmix"
 msgstr "AAC микширование"
@@ -1085,7 +1085,7 @@ msgid "Audio"
 msgstr "Аудио"
 
 msgid "Audio / Video"
-msgstr "Аудио/Видео"
+msgstr "Аудио / Видео"
 
 msgid "Audio PID"
 msgstr "Аудио PID"
