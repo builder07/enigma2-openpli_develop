@@ -317,14 +317,14 @@ class ServiceList(GUIComponent):
 
 	def setMode(self, mode):
 		if config.usage.servicelist_number_of_services.value == "by skin":
-			ItemHeight = self.ItemHeight
+			ItemHeight = self.ItemHeight * (2 if config.usage.servicelist_twolines.value else 1)
 			ServiceNameFont = self.ServiceNameFont
 			ServiceNumberFont = self.ServiceNumberFont
 			ServiceInfoFont = self.ServiceInfoFont
 		else:
 			ItemHeight = int(self.instance.size().height() / int(config.usage.servicelist_number_of_services.value))
-			FontFactor = ItemHeight * 100 / self.ItemHeight
-			ServiceNameFont = gFont(self.ServiceNameFont.family, int(self.ServiceNameFont.pointSize * FontFactor/100))
+                        FontFactor = ItemHeight * (60 if config.usage.servicelist_twolines.value else 100) / self.ItemHeight			
+                        ServiceNameFont = gFont(self.ServiceNameFont.family, int(self.ServiceNameFont.pointSize * FontFactor/100))
 			ServiceNumberFont = gFont(self.ServiceNumberFont.family, int(self.ServiceNumberFont.pointSize * FontFactor/100))
 			ServiceInfoFont = gFont(self.ServiceInfoFont.family, int(self.ServiceInfoFont.pointSize * FontFactor/100))
 
@@ -367,11 +367,12 @@ class ServiceList(GUIComponent):
 		self.l.setElementFont(self.l.celServiceInfo, ServiceInfoFont)
 		if "perc" in config.usage.show_event_progress_in_servicelist.value:
 			self.l.setElementFont(self.l.celServiceEventProgressbar, ServiceInfoFont)
+		self.l.setShowTwoLines(config.usage.servicelist_twolines.value)
 		self.l.setHideNumberMarker(config.usage.hide_number_markers.value)
 		self.l.setServiceTypeIconMode(int(config.usage.servicetype_icon_mode.value))
 		self.l.setCryptoIconMode(int(config.usage.crypto_icon_mode.value))
 		self.l.setRecordIndicatorMode(int(config.usage.record_indicator_mode.value))
-		self.l.setColumnWidth(int(config.usage.servicelist_column.value))
+		self.l.setColumnWidth(-1 if config.usage.servicelist_twolines.value else int(config.usage.servicelist_column.value))
 
 	def selectionEnabled(self, enabled):
 		if self.instance is not None:
