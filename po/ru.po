@@ -6136,7 +6136,7 @@ msgid "Protect timer menu"
 msgstr "Защита меню таймеров"
 
 msgid "Provider"
-msgstr "Провайдер"
+msgstr "Провайдеры"
 
 msgid "Providers"
 msgstr "Провайдеры"
