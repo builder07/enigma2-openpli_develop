@@ -237,6 +237,13 @@ msgstr[1] "%d ядра"
 msgstr[2] "%d ядра"
 
 #, python-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d день"
+msgstr[1] "%d дня"
+msgstr[2] "%d дней"
+
+#, python-format
 msgid "%d file"
 msgid_plural "%d files"
 msgstr[0] "%d файл"
@@ -2245,6 +2252,9 @@ msgstr "Cuba"
 
 msgid "Curacao"
 msgstr "Curacao"
+
+msgid "Current"
+msgstr "Текущий"
 
 msgid "Current CEC address"
 msgstr "Текущий адрес CEC"
@@ -9182,6 +9192,9 @@ msgstr "Обновление"
 
 msgid "Upper case"
 msgstr "Верхний регистр"
+
+msgid "Uptime"
+msgstr "Время работы"
 
 msgid "Uruguay"
 msgstr "Uruguay"
