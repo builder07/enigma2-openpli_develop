@@ -105,6 +105,8 @@ class About(Screen):
 		AboutText += hddinfo + "\n\n" + _("Network Info:")
 		for x in about.GetIPsFromNetworkInterfaces():
 			AboutText += "\n" + x[0] + ": " + x[1]
+		uptime = about.getBoxUptime().split(':')
+		AboutText += '\n\n' + uptime[0] + ": " + uptime[1]
 			
 		AboutText += "\n"
 		AboutText += "\n"
