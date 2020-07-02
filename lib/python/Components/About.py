@@ -196,9 +196,9 @@ def getBoxUptime():
 		m = (secs % 3600) / 60
 		time += ngettext("%d hour", "%d hours", h) % h + " "
 		time += ngettext("%d minute", "%d minuts", m) % m
-		return  _("Uptime: %s") % time
+		return  "%s" % time
 	except:
-		return ''
+		return '-'
 
 def getIdea():
 		return _("BlackFish")
