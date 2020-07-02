@@ -181,15 +181,7 @@ def GetIPsFromNetworkInterfaces():
 			iface_addr = socket.inet_ntoa(namestr[i+20:i+24])
 			ifaces.append((iface_name, iface_addr))
 	return ifaces
-def getIdea():
-		return _("BlackFish")
 
-def getEmail():
-		return _("blackfish.3654@gmail.com")
-	
-def getDonate():
-		return _("Z541154775569")
-	
 def getBoxUptime():
 	try:
 		time = ''
@@ -207,6 +199,15 @@ def getBoxUptime():
 		return  _("Uptime: %s") % time
 	except:
 		return ''
+
+def getIdea():
+		return _("BlackFish")
+
+def getEmail():
+		return _("blackfish.3654@gmail.com")
+	
+def getDonate():
+		return _("Z541154775569")
 
 # For modules that do "from About import about"
 about = sys.modules[__name__]
