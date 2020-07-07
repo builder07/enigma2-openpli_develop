@@ -37,6 +37,8 @@ class Screen(dict):
 		self.renderer = []
 		self.helpList = []  # In order to support screens *without* a help, we need the list in every screen. how ironic.
 		self.close_on_next_exec = None
+		# DEBUG: Variable already_shown used in webinterface/src/WebScreens.py...
+		# DEBUG: self.standAlone = False  # Stand alone screens (for example web screens) don't care about having or not having focus.
 		self.stand_alone = False  # Stand alone screens (for example web screens) don't care about having or not having focus.
 		self.keyboardMode = None
 		self.desktop = None
@@ -64,14 +66,14 @@ class Screen(dict):
 			for x in self.onExecBegin + single:
 				x()
 				# DEBUG: if not self.standAlone and self.session.current_dialog != self:
-                                if not self.stand_alone and self.session.current_dialog != self:
+				if not self.stand_alone and self.session.current_dialog != self:
 					return
 			# assert self.session is None, "a screen can only exec once per time"
 			# self.session = session
 			for val in self.values() + self.renderer:
 				val.execBegin()
 				# DEBUG: if not self.standAlone and self.session.current_dialog != self:
-                                if not self.stand_alone and self.session.current_dialog != self:
+				if not self.stand_alone and self.session.current_dialog != self:
 					return
 				self.active_components.append(val)
 			self.execing = True
@@ -116,7 +118,7 @@ class Screen(dict):
 	def show(self):
 		print("[Screen] Showing screen '%s'." % self.skinName)  # To ease identification of screens.
 		# DEBUG: if (self.shown and self.alreadyShown) or not self.instance:
-                if (self.shown and self.already_shown) or not self.instance:
+		if (self.shown and self.already_shown) or not self.instance:
 			return
 		self.shown = True
 		# DEBUG: self.alreadyShown = True
@@ -139,7 +141,7 @@ class Screen(dict):
 			if isinstance(val, GUIComponent) or isinstance(val, Source):
 				val.onHide()
 
-		def getScreenPath(self):
+	def getScreenPath(self):
 		return self.screenPath
 
 	def setTitle(self, title):
@@ -194,7 +196,7 @@ class Screen(dict):
 		if self.instance:
 			self.instance.setAnimationMode(mode)
 
-        def getRelatedScreen(self, name):
+	def getRelatedScreen(self, name):
 		if name == "session":
 			return self.session.screen
 		elif name == "parent":
@@ -207,7 +209,7 @@ class Screen(dict):
 		self.__callLaterTimer = eTimer()
 		self.__callLaterTimer.callback.append(function)
 		self.__callLaterTimer.start(0, True)
-		
+
 	def applySkin(self):
 		z = 0
 		# DEBUG: baseRes = (getDesktop(GUI_SKIN_ID).size().width(), getDesktop(GUI_SKIN_ID).size().height())
