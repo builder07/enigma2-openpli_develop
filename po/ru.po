@@ -4450,7 +4450,7 @@ msgid "Large"
 msgstr "Большой"
 
 msgid "Last config"
-msgstr "Последнии настройки"
+msgstr "Последние настройки"
 
 msgid "Last speed"
 msgstr "Последняя скорость"
